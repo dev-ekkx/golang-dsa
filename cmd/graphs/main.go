@@ -34,6 +34,35 @@ func contains(s []*Vertex, k int) bool {
 	return false
 }
 
+// Add Edge to Graph
+func (g *Graph) AddEdge(from, to int) {
+	// get vertex
+	fromVertex := g.getVertex(from)
+	toVertex := g.getVertex(to)
+
+	// check error
+	if fromVertex == nil || toVertex == nil {
+		err := fmt.Errorf("Invalid edge %v --> %v", from, to)
+		fmt.Println(err.Error())
+	} else if contains(fromVertex.adjacent, to) {
+		err := fmt.Errorf("Existing edge %v --> %v", from, to)
+		fmt.Println(err.Error())
+	} else {
+		// add edge
+		fromVertex.adjacent = append(fromVertex.adjacent, toVertex)
+	}
+}
+
+// Get Vertex
+func (g *Graph) getVertex(k int) *Vertex {
+	for i, v := range g.vertices {
+		if k == v.key {
+			return g.vertices[i]
+		}
+	}
+	return nil
+}
+
 // Print the adjacent list for each vertex of the graph
 func (g *Graph) Print() {
 	for _, v := range g.vertices {
